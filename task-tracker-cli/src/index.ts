@@ -19,16 +19,18 @@ if (!fs.existsSync(file)) {
 
 const tasks: TaskType[] = JSON.parse(fs.readFileSync(file, "utf-8"));
 
-if (command === "add") {
-  const task: TaskType = {
-    id: generateId(),
-    description: content,
-    status: "todo",
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
-  };
+switch (command) {
+  case "add":
+    const task: TaskType = {
+      id: generateId(),
+      description: content,
+      status: "todo",
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+    };
 
-  tasks.push(task);
-  fs.writeFileSync("task.json", JSON.stringify(tasks, null, 2), "utf-8");
-  console.log(`✅ Task added: ${task.description}`);
+    tasks.push(task);
+    fs.writeFileSync("task.json", JSON.stringify(tasks, null, 2), "utf-8");
+    console.log(`✅ Task added: ${task.description}`);
+    break;
 }
