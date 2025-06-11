@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 import * as fs from "fs";
-import { generateId, TaskType } from "./utils/utils";
+import {handleAddTask, handleUpdateTask, TaskType} from "./utils/utils";
 
 const args = process.argv.slice(2);
 
@@ -19,18 +19,15 @@ if (!fs.existsSync(file)) {
 
 const tasks: TaskType[] = JSON.parse(fs.readFileSync(file, "utf-8"));
 
+const taskId : number = Number(args[1]);
+const  newTaskDescription: string = args.slice(2).join(" ");
+
 switch (command) {
   case "add":
-    const task: TaskType = {
-      id: generateId(),
-      description: content,
-      status: "todo",
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-    };
-
-    tasks.push(task);
-    fs.writeFileSync("task.json", JSON.stringify(tasks, null, 2), "utf-8");
-    console.log(`✅ Task added: ${task.description}`);
+    handleAddTask(tasks, content)
     break;
+
+  case "update":
+    handleUpdateTask(taskId, newTaskDescription, tasks);
+    break
 }
