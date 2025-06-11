@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 import * as fs from "fs";
-import {handleAddTask, handleUpdateTask, TaskType} from "./utils/utils";
+import {handleAddTask, handleDeleteTask, handleUpdateTask, TaskType} from "./utils/utils";
 
 const args = process.argv.slice(2);
 
@@ -20,14 +20,20 @@ if (!fs.existsSync(file)) {
 const tasks: TaskType[] = JSON.parse(fs.readFileSync(file, "utf-8"));
 
 const taskId : number = Number(args[1]);
+const  index: number = tasks.findIndex((task) => task.id === taskId);
 const  newTaskDescription: string = args.slice(2).join(" ");
 
 switch (command) {
   case "add":
-    handleAddTask(tasks, content)
+    handleAddTask(tasks, content);
     break;
 
   case "update":
-    handleUpdateTask(taskId, newTaskDescription, tasks);
-    break
+    handleUpdateTask(index, newTaskDescription, tasks);
+    break;
+
+  case "delete":
+    handleDeleteTask(index, tasks);
+    break;
+
 }

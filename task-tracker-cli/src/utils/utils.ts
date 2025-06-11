@@ -26,8 +26,8 @@ export function handleAddTask(tasks: TaskType[], content: string): void {
   console.log(`✅ Task added: ${task.description}`);
 }
 
-export function handleUpdateTask(taskId: number, newTaskDescription: string, tasks: TaskType[]): void {
-  const  index: number = tasks.findIndex((task) => task.id === taskId);
+export function handleUpdateTask(index: number, newTaskDescription: string, tasks: TaskType[]): void {
+  // const  index: number = tasks.findIndex((task) => task.id === taskId);
 
   if (index !== -1) {
     tasks[index].description = newTaskDescription;
@@ -36,4 +36,13 @@ export function handleUpdateTask(taskId: number, newTaskDescription: string, tas
 
   fs.writeFileSync("task.json", JSON.stringify(tasks, null, 2), "utf-8");
   console.log(tasks);
+}
+
+export function  handleDeleteTask(index: number, tasks: TaskType[]): void {
+  if (index !== -1) {
+    tasks.splice(index, 1);
+  }
+
+  fs.writeFileSync("task.json", JSON.stringify(tasks, null, 2), "utf-8");
+  console.log("🗑️  Task removed");
 }
