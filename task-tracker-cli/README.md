@@ -1,4 +1,5 @@
 # task-tracker-cli
+project-url: https://github.com/just-npc/my-typescript-project-based-learn/tree/main/task-tracker-cli
 
 ### important things to setup the project on your computer
 - clone the main repo.
