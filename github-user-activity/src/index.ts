@@ -1,44 +1,91 @@
 #!/usr/bin/env node
 
-// import * as fs from "fs";
-
 const args = process.argv.slice(2);
 
-enum GithubActivity {
-  commit = "PushEvent",
-  issues = "IssuesEvent",
-  stars = "WatchEvent",
-}
+const inputMap: Record<string, string> = {
+  commit: "PushEvent",
+  issues: "IssuesEvent",
+  stars: "WatchEvent",
+  comment: "IssueCommentEvent",
+  pr: "PullRequestEvent",
+  fork: "ForkEvent",
+  create: "CreateEvent",
+  release: "ReleaseEvent",
+};
+
 const keyword = args[0]?.toLocaleLowerCase();
+const selectedEvent = inputMap[keyword];
 const githubUsername: string = args[1];
 
 async function getUserActivity(username: string): Promise<void> {
-  const response = await fetch(
-    `https://api.github.com/users/${username}/events/public`
-  );
-  const events = await response.json();
+  try {
+    const response = await fetch(
+      `https://api.github.com/users/${username}/events/public`
+    );
+    const events: any[] = await response.json();
 
-  for (const event of events.slice(0, 10)) {
-    const repo = event.repo.name;
+    events.forEach((event) => {
+      if (event.type !== selectedEvent) return;
 
-    switch (keyword) {
-      case "commit":
-        events
-          .filter((e: { type: string }) => e.type === "PushEvent")
-          .forEach((e: { repo: { name: any } }) => {
-            console.log(`- Pushed commits to ${e.repo.name}`);
-          });
-        break;
+      switch (event.type) {
+        case "PushEvent":
+          console.log(
+            `Pushed ${event.payload.commits.length} commit to ${event.repo.name}`
+          );
+          break;
 
-      default:
-        break;
-    }
-    // console.log(`Repo: ${event.repo.name}, Type: ${event.type}`);
+        case "CreateEvent":
+          console.log(
+            `Created ${event.payload.ref_type} "${event.payload.ref}"`
+          );
+          break;
+
+        case "WatchEvent":
+          console.log(`Starred ${event.repo.name} `);
+          break;
+
+        case "IssuesEvent":
+          console.log(
+            `${event.payload.action} issue #${event.payload.issue.number}: "${event.payload.title}"`
+          );
+          break;
+
+        case "PullRequestEvent":
+          console.log(
+            `${event.payload.action} pull request #${event.payload.pull_request.number} in ${event.repo.name}/${event.payload.pull_request.title}`
+          );
+          break;
+
+        case "ForkEvent":
+          console.log(
+            `Forked ${event.repo.name} to ${event.payload.forkee.full_name}`
+          );
+          break;
+
+        case "IssueCommentEvent":
+          console.log(
+            `Commented on issue #${event.payload.issue.number} in ${event.repo.name}`
+          );
+          break;
+
+        case "ReleaseEvent":
+          console.log(
+            `${event.payload.release.tag_name} in ${event.repo.name}`
+          );
+          break;
+
+        default:
+          console.log("nothing found!");
+          break;
+      }
+    });
+  } catch (error) {
+    console.error(error);
   }
 }
 
 if (!githubUsername) {
   console.log("put the right username!");
 } else {
-  getUserActivity(githubUsername);
+  getUserActivity(githubUsername).catch(console.error);
 }
