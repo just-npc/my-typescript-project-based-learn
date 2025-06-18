@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "date": "2025-6-18",
+    "description": "beli cola",
+    "amount": "8"
+  },
+  {
+    "id": 2,
+    "date": "2025-6-18",
+    "description": "beli skin mamah Springfield",
+    "amount": "100"
+  },
+  {
+    "id": 3,
+    "date": "2025-6-18",
+    "description": "beli skin watuk",
+    "amount": "80"
+  },
+  {
+    "id": 4,
+    "date": "2025-6-18",
+    "description": "beli kopi azucar",
+    "amount": 30
+  }
+]
