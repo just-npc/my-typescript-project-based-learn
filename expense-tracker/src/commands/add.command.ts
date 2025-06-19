@@ -10,9 +10,12 @@ export const addExpense = new Command()
     .requiredOption("--amount <amount>", "expense amount")
     .action((option) => {
       const { description, amount } = option;
+      const month = String(date.getMonth() + 1).padStart(2, "0");
+      const maxId = expenses.reduce((max, item) => item.id > max ? item.id : max, 0);
+
       const data: TrackerType = {
-        id: expenses.length + 1,
-        date: `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`,
+        id: maxId + 1,
+        date: `${date.getFullYear()}-${month}-${date.getDate()}`,
         description: `${description}`,
         amount: parseInt(amount),
       }
