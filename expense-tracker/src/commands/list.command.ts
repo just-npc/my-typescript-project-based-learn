@@ -1,5 +1,4 @@
-//import * as fs from "fs";
-import Table  from "cli-table3";
+import Table from "cli-table3";
 import {expenses, TrackerType} from "../utils/utils";
 import { Command } from "commander";
 
