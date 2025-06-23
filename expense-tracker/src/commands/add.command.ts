@@ -8,8 +8,9 @@ export const addExpense = new Command()
     .description("add expense")
     .requiredOption("--description <desc>", "expense description")
     .requiredOption("--amount <amount>", "expense amount")
+    .requiredOption("--category <category>", "expense category")
     .action((option) => {
-      const { description, amount } = option;
+      const { description, amount, category } = option;
       const month = String(date.getMonth() + 1).padStart(2, "0");
       const maxId = expenses.reduce((max, item) => item.id > max ? item.id : max, 0);
 
@@ -17,6 +18,7 @@ export const addExpense = new Command()
         id: maxId + 1,
         date: `${date.getFullYear()}-${month}-${date.getDate()}`,
         description: `${description}`,
+        category: category,
         amount: parseInt(amount),
       }
 
