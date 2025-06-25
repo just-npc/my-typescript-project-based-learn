@@ -5,6 +5,8 @@ import  { Command } from "commander";
 import { args, file } from "./utils/utils";
 import { addExpense } from "./commands/add.command";
 import {listExpense} from "./commands/list.command";
+import {expenseSummary} from "./commands/summary.command";
+import {deleteExpense} from "./commands/delete.command";
 
 const program = new Command();
 
@@ -25,5 +27,7 @@ if (!fs.existsSync(file)) {
 
 program.addCommand(addExpense);
 program.addCommand(listExpense);
+program.addCommand(expenseSummary);
+program.addCommand(deleteExpense);
 program.parse();
 
