@@ -2,9 +2,12 @@
 
 import * as fs from "fs";
 import  { Command } from "commander";
-import { args, file } from "./utils/utils";
+import { args, checkBudget, file } from "./utils/utils";
 import { addExpense } from "./commands/add.command";
-import {listExpense} from "./commands/list.command";
+import { listExpense } from "./commands/list.command";
+import { expenseSummary } from "./commands/summary.command";
+import { deleteExpense } from "./commands/delete.command";
+import { setExpense } from "./commands/setExpense.command";
 
 const program = new Command();
 
@@ -21,9 +24,15 @@ if (!fs.existsSync(file)) {
   fs.writeFileSync(file, "[]", "utf-8");
 }
 
-
-
 program.addCommand(addExpense);
 program.addCommand(listExpense);
+program.addCommand(expenseSummary);
+program.addCommand(deleteExpense);
+program.addCommand(setExpense);
+
+program.hook('postAction', () => {
+  checkBudget();
+})
+
 program.parse();
 
