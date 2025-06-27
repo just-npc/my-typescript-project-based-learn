@@ -8,6 +8,8 @@ import { listExpense } from "./commands/list.command";
 import { expenseSummary } from "./commands/summary.command";
 import { deleteExpense } from "./commands/delete.command";
 import { setExpense } from "./commands/setExpense.command";
+import {helpCommand} from "./commands/help.command";
+import {makeCsv} from "./commands/exportCsv.command";
 
 const program = new Command();
 
@@ -29,6 +31,9 @@ program.addCommand(listExpense);
 program.addCommand(expenseSummary);
 program.addCommand(deleteExpense);
 program.addCommand(setExpense);
+program.addCommand(helpCommand);
+program.addCommand(makeCsv);
+
 
 program.hook('postAction', () => {
   checkBudget();
